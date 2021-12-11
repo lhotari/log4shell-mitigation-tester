@@ -18,6 +18,11 @@ Run without workaround
 java -jar app/build/libs/app-all.jar
 ```
 
+Test some message lookup feature by passing a string on command line:
+```
+FOO='Hello ${env:USER}' java -jar app/build/libs/app-all.jar '${env:FOO}'
+```
+
 Test `-Dlog4j2.formatMsgNoLookups=true` system property workaround, https://twitter.com/brunoborges/status/1469186875608875011
 ```
 java -Dlog4j2.formatMsgNoLookups=true -jar app/build/libs/app-all.jar
