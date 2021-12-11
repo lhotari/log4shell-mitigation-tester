@@ -1,15 +1,19 @@
 package log4shell.mitigation.tester;
 
 import org.apache.logging.log4j.core.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class App {
+    private static final Logger LOG = LoggerFactory.getLogger(App.class);
+
     public static void main(String[] args) {
         boolean noLookups = Constants.FORMAT_MESSAGES_PATTERN_DISABLE_LOOKUPS;
-        System.out.println("noLookups " + noLookups);
+        LOG.info("noLookups {}", noLookups);
         if (noLookups) {
-            System.out.println("Lookups are disabled.");
+            LOG.info("Lookups are disabled. Example lookup USER=${env:USER}");
         } else {
-            System.out.println("Lookups are enabled! The application is vulnerable for Log4Shell!");
+            LOG.info("Lookups are enabled! The application is vulnerable for Log4Shell! Example lookup USER=${env:USER}");
         }
     }
 }
