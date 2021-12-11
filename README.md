@@ -33,3 +33,22 @@ Test `JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true` environment variable wo
 JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true java -jar app/build/libs/app-all.jar
 ```
 
+## Kubernetes / docker mitigation solutions for Log4Shell
+
+It is necessary to mitigate Log4Shell immediately without waiting for a new software release. Here are some solutions for doing that quickly and effectively.
+
+### Patching existing docker images with a thin overlay that sets LOG4J_FORMAT_MSG_NO_LOOKUPS=true env
+
+This is a generic solution:
+https://github.com/lhotari/Log4Shell-mitigation-Dockerfile-overlay
+
+### Example of patching existing docker images with Log4j 2.15.0 jar files
+
+This is not generic, example is from apache/pulsar:
+https://github.com/lhotari/pulsar-docker-images-patch-CVE-2021-44228
+
+### Patching k8s deployments with LOG4J_FORMAT_MSG_NO_LOOKUPS=true env
+
+https://gist.github.com/brunoborges/9df576689b404aee70a8065210c77fb3
+
+
