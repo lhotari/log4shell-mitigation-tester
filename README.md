@@ -18,13 +18,12 @@ Run without workaround
 java -jar app/build/libs/app-all.jar
 ```
 
+Test `-Dlog4j2.formatMsgNoLookups=true` system property workaround, https://twitter.com/brunoborges/status/1469186875608875011
+```
+java -Dlog4j2.formatMsgNoLookups=true -jar app/build/libs/app-all.jar
+```
 
 Test `LOG4J_FORMAT_MSG_NO_LOOKUPS=true` environment variable workaround, https://twitter.com/brunoborges/status/1469462412679991300
-```
-LOG4J_FORMAT_MSG_NO_LOOKUPS=true java -jar app/build/libs/app-all.jar
-```
-
-Test `-D` environment variable workaround, https://twitter.com/brunoborges/status/1469462412679991300
 ```
 LOG4J_FORMAT_MSG_NO_LOOKUPS=true java -jar app/build/libs/app-all.jar
 ```
@@ -34,7 +33,3 @@ Test `JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true` environment variable wo
 JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true java -jar app/build/libs/app-all.jar
 ```
 
-Test `-Dlog4j2.formatMsgNoLookups=true` system property workaround, https://twitter.com/brunoborges/status/1469186875608875011
-```
-java -Dlog4j2.formatMsgNoLookups=true -jar app/build/libs/app-all.jar
-```
