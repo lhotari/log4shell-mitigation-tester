@@ -33,6 +33,16 @@ Test `JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true` environment variable wo
 JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true java -jar app/build/libs/app-all.jar
 ```
 
+## Seeing is believing - Debug it your self in an IDE
+
+You can also debug the solution and place a break point in the vulnerable code which is 
+https://github.com/apache/logging-log4j2/blob/dd18e9b21009055e226daf5b233c92b6a17934ca/log4j-core/src/main/java/org/apache/logging/log4j/core/pattern/MessagePatternConverter.java#L119-L135
+
+Set the debugger in class is `org.apache.logging.log4j.core.pattern.MessagePatternConverter` at line 128.
+
+When the mitigation is in place, the debugger should never get in the code block.
+
+
 ## Kubernetes / docker mitigation solutions for Log4Shell
 
 It is necessary to mitigate Log4Shell immediately without waiting for a new software release. Here are some solutions for doing that quickly and effectively.
