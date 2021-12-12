@@ -41,6 +41,11 @@ Test `JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true` environment variable wo
 JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true java -jar app/build/libs/app-all.jar
 ```
 
+Test log4j2.component.properties in classpath workaround solution:
+```
+java -cp log4j2-formatMsgNoLookups/build/libs/log4j2-formatMsgNoLookups.jar:app/build/libs/app-all.jar log4shell.mitigation.tester.App
+```
+
 ## Seeing is believing - exploit this sample app
 
 When you run the app, you will see the vulnerability in action:

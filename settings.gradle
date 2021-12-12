@@ -9,3 +9,4 @@
 
 rootProject.name = 'log4shell-mitigation-tester'
 include('app')
+include 'log4j2-formatMsgNoLookups'
