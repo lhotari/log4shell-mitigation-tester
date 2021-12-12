@@ -31,7 +31,7 @@ Test `-Dlog4j2.formatMsgNoLookups=true` system property workaround, https://twit
 java -Dlog4j2.formatMsgNoLookups=true -jar app/build/libs/app-all.jar
 ```
 
-Test `LOG4J_FORMAT_MSG_NO_LOOKUPS=true` environment variable workaround, https://twitter.com/brunoborges/status/1469462412679991300
+Test ``LOG4J_FORMAT_MSG_NO_LOOKUPS=true`` environment variable workaround, https://twitter.com/brunoborges/status/1469462412679991300
 ```
 LOG4J_FORMAT_MSG_NO_LOOKUPS=true java -jar app/build/libs/app-all.jar
 ```
@@ -41,17 +41,31 @@ Test `JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true` environment variable wo
 JAVA_TOOL_OPTIONS=-Dlog4j.formatMsgNoLookups=true java -jar app/build/libs/app-all.jar
 ```
 
-## Seeing is believing - Debug it your self in an IDE
+## Seeing is believing - exploit this sample app
 
-(pending, I'm currently adding changes to the app to be able to test this)
+When you run the app, you will see the vulnerability in action:
+```bash
+❯ java -jar app/build/libs/app-all.jar '${jndi:ldap://127.0.0.1/a?user=${env:USER}}'
+[2021-12-12 10:57:07,216] [main] [log4shell.mitigation.tester.App] INFO noLookups false
+[2021-12-12 10:57:07,218] [main] [log4shell.mitigation.tester.App] INFO Lookups are enabled! The application is vulnerable for Log4Shell! Example lookup USER=lari
+2021-12-12 10:57:07,239 main WARN Error looking up JNDI resource [ldap://127.0.0.1/a?user=lari]. javax.naming.InvalidNameException: ldap://127.0.0.1/a?user=lari
+	at java.naming/com.sun.jndi.url.ldap.ldapURLContext.lookup(ldapURLContext.java:92)
+	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+```
 
 You can also debug the solution and place a break point in the vulnerable code which is 
 https://github.com/apache/logging-log4j2/blob/dd18e9b21009055e226daf5b233c92b6a17934ca/log4j-core/src/main/java/org/apache/logging/log4j/core/pattern/MessagePatternConverter.java#L119-L135
 
 Set the debugger in class is `org.apache.logging.log4j.core.pattern.MessagePatternConverter` at line 128.
 
-When the mitigation is in place, the debugger should never get in the code block.
+When the mitigation is in place, the debugger should never get in the code block. The LDAP call shouldn't get attempted either:
 
+```bash
+❯ LOG4J_FORMAT_MSG_NO_LOOKUPS=true java -jar app/build/libs/app-all.jar '${jndi:ldap://127.0.0.1/a?user=${env:USER}}'
+[2021-12-12 10:59:15,589] [main] [log4shell.mitigation.tester.App] INFO noLookups true
+[2021-12-12 10:59:15,590] [main] [log4shell.mitigation.tester.App] INFO Lookups are disabled. Example lookup USER=${env:USER}
+[2021-12-12 10:59:15,591] [main] [log4shell.mitigation.tester.App] INFO Provided command line arguments are [${jndi:ldap://127.0.0.1/a?user=${env:USER}}]
+```
 
 ## Kubernetes / docker mitigation solutions for Log4Shell
 
