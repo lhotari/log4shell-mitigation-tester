@@ -4,7 +4,7 @@ This is an example application using Log4j 2.14.1 .
 
 source code: [App.java](app/src/main/java/log4shell/mitigation/tester/App.java)
 
-The purpose of this is to be able to test different mitigation approaches.
+The purpose of this is to be able to test different mitigation approaches. The mitigation approaches are also mentioned in [Microsoft’s Response to CVE-2021-44228 Apache Log4j 2](https://msrc-blog.microsoft.com/2021/12/11/microsofts-response-to-cve-2021-44228-apache-log4j2/).
 
 ## Example usage
 
