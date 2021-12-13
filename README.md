@@ -74,6 +74,8 @@ When the mitigation is in place, the debugger should never get in the code block
 
 ### Exploiting with Rogue JNDI
 
+Demonstrating information leakage depends on https://github.com/veracode-research/rogue-jndi/pull/11 changes
+
 in one terminal
 ```
 git clone https://github.com/veracode-research/rogue-jndi
